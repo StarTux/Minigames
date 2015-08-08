@@ -1,0 +1,2 @@
+AllowedCommands: [ l, g, mc, a, join ]
+ForcedCommands: [ 'ch l' ]
