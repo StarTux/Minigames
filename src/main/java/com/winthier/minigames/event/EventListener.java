@@ -73,7 +73,7 @@ public class EventListener implements Listener {
                 }
                 info.hasJoinedBefore(true);
             }
-            game.announce("&f%sJoined the game", player.getName());
+            game.announce("&f%s joined the game", player.getName());
         }
         final List<String> commandList = plugin.getConfig().getStringList("ForcedCommands");
         new BukkitRunnable() {
@@ -103,7 +103,10 @@ public class EventListener implements Listener {
         if (event.getLeaveMessage() != null) {
             final Game game = event.getGame();
             if (game != null) {
-                game.announce(event.getLeaveMessage());
+                Player player = event.getPlayer();
+                if (player != null) {
+                    game.announce("&f%s left the game", player.getName());
+                }
             }
         }
     }
