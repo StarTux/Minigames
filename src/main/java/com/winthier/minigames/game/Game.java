@@ -6,6 +6,7 @@ import com.winthier.minigames.event.game.GameStateEvent;
 import com.winthier.minigames.player.PlayerInfo;
 import com.winthier.minigames.util.Console;
 import com.winthier.minigames.util.Msg;
+import com.winthier.minigames.util.Players;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ public abstract class Game {
     private Map<String, YamlConfiguration> configFiles = new HashMap<>();
     private Map<String, YamlConfiguration> worldConfigs = new HashMap<>();
     private int playerCount;
-    private int maxPlayers;
+    private int maxPlayers = 16;
 
     public Game() {
         uuid = UUID.randomUUID();
@@ -51,7 +52,6 @@ public abstract class Game {
 
     public void configure(MemoryConfiguration config) {
         this.config = config;
-        onConfigure();
     }
 
     public final void enable() {
@@ -243,6 +243,10 @@ public abstract class Game {
                 Player player = info.getPlayer();
                 if (player != null) {
                     info.hasJoinedBefore(true);
+                    Location loc = getSpawnLocation(player);
+                    if (loc == null && !worlds.isEmpty()) loc = worlds.get(0).getSpawnLocation();
+                    if (loc != null) player.teleport(loc);
+                    Players.reset(player);
                     onPlayerReady(player);
                 }
             }
@@ -353,15 +357,11 @@ public abstract class Game {
 
     public void onEnable() {}
     public void onDisable() {}
-    public void onConfigure() {}
     /**
      * Override to handle signed up players that join the server
      * or are on the server while this game becomes ready.
      */
     public void onPlayerReady(Player player) {
-        if (worlds.isEmpty()) return;
-        if (worlds.contains(player.getWorld())) return;
-        player.teleport(worlds.get(0).getSpawnLocation());
     }
 
     /**
