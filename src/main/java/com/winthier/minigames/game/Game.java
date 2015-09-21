@@ -18,8 +18,8 @@ import java.util.logging.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -39,7 +39,7 @@ public abstract class Game {
     private final int id;
     private static int nextId = 0;
     private String name;
-    private MemoryConfiguration config;
+    private ConfigurationSection config;
     private Map<String, YamlConfiguration> configFiles = new HashMap<>();
     private Map<String, YamlConfiguration> worldConfigs = new HashMap<>();
     private int playerCount;
@@ -50,7 +50,7 @@ public abstract class Game {
         this.id = nextId++;
     }
 
-    public void configure(MemoryConfiguration config) {
+    public void configure(ConfigurationSection config) {
         this.config = config;
     }
 
@@ -296,7 +296,7 @@ public abstract class Game {
         }
     }
 
-    public MemoryConfiguration getConfig() {
+    public ConfigurationSection getConfig() {
         return config;
     }
 
@@ -304,7 +304,7 @@ public abstract class Game {
         return new File(MinigamesPlugin.getConfigFolder(), getName());
     }
 
-    public FileConfiguration getConfigFile(String name) {
+    public ConfigurationSection getConfigFile(String name) {
         YamlConfiguration result = configFiles.get(name);
         if (result == null) {
             result = new YamlConfiguration();
@@ -320,7 +320,7 @@ public abstract class Game {
         return result;
     }
 
-    public FileConfiguration getWorldConfig(World world, String name) {
+    public ConfigurationSection getWorldConfig(World world, String name) {
         final String key = world.getName() + "/" + name;
         YamlConfiguration result = worldConfigs.get(key);
         if (result == null) {
@@ -337,22 +337,6 @@ public abstract class Game {
             worldConfigs.put(key, result);
         }
         return result;
-    }
-
-    public void saveWorldConfig(World world, String name) {
-        final String key = world.getName() + "/" + name;
-        YamlConfiguration config = worldConfigs.get(key);
-        if (config == null) config = new YamlConfiguration();
-        try {
-            File file;
-            file = new File(world.getWorldFolder(), "config");
-            file = new File(file, getName());
-            file = new File(file, name + ".yml");
-            System.out.println("Saving to " + file.getPath());
-            config.save(file);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     public void onEnable() {}
