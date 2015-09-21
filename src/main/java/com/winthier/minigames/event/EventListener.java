@@ -22,13 +22,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.spigotmc.event.player.PlayerSpawnLocationEvent;
 
-// import com.comphenix.protocol.PacketType;
-// import com.comphenix.protocol.ProtocolLibrary;
-// import com.comphenix.protocol.events.ListenerOptions;
-// import com.comphenix.protocol.events.ListenerPriority;
-// import com.comphenix.protocol.events.PacketAdapter;
-// import com.comphenix.protocol.events.PacketEvent;
-
 public class EventListener implements Listener {
     private final MinigamesPlugin plugin;
 
@@ -38,11 +31,6 @@ public class EventListener implements Listener {
 
     public void onEnable() {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
-        // try {
-        //     enableProtocol();
-        // } catch (Throwable t) {
-        //     t.printStackTrace();
-        // }
     }
 
     /**
@@ -60,12 +48,6 @@ public class EventListener implements Listener {
         final Game game = info.getCurrentGame();
         if (game == null) {
             plugin.leavePlayer(player);
-            //     event.disallow(PlayerLoginEvent.Result.KICK_OTHER, "Your game could not be found.");
-            //     return;
-            // }
-            // if (!game.getAcceptPlayerJoins()) {
-            //     event.disallow(PlayerLoginEvent.Result.KICK_OTHER, "Your game is not ready yet.");
-            //     return;
         } else {
             if (!info.hasJoinedBefore()) {
                 if (game.getState() == Game.State.PLAY) {
@@ -178,41 +160,4 @@ public class EventListener implements Listener {
             event.setCancelled(true);
         }
     }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // ProtocolLib
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    // @SuppressWarnings("deprecation")
-    // public void enableProtocol() {
-    //     PacketAdapter.AdapterParameteters params;
-    //     params = PacketAdapter
-    //         .params(plugin, PacketType.Play.Server.PLAYER_INFO)
-    //         .serverSide()
-    //         .listenerPriority(ListenerPriority.HIGHEST)
-    //         //.options(ListenerOptions.ASYNC)
-    //         ;
-    //     PacketAdapter adapter;
-    //     adapter = new PacketAdapter(params) {
-    //         @Override
-    //         public void onPacketSending(PacketEvent event) {
-    //             // If the player goes offline, allow the packet
-    //             final boolean online = event.getPacket().getBooleans().read(0);
-    //             if (!online) return;
-    //             final Player recipient = event.getPlayer();
-    //             final String name = event.getPacket().getStrings().read(0);
-    //             final Player player = Bukkit.getServer().getPlayer(name);
-    //             if (recipient != null && player != null) {
-    //                 // Allow sending players their own online packets
-    //                 if (recipient.equals(player)) return;
-    //                 // Allow sending packets to players in the same game
-    //                 final Game game1 = MinigamesPlugin.getPlayerManager().getCurrentGame(recipient);
-    //                 final Game game2 = MinigamesPlugin.getPlayerManager().getCurrentGame(player);
-    //                 if (game1 == game2) return;
-    //             }
-    //             event.setCancelled(true);
-    //         }
-    //     };
-    //     ProtocolLibrary.getProtocolManager().addPacketListener(adapter);
-    // }
 }
