@@ -118,7 +118,6 @@ public class DefaultEventDispatcher extends EventDispatcher {
             // InventoryMoveEvent(?)
             gameFinder = new InventoryGameFinder();
         }
-        MinigamesPlugin.getInstance().getLogger().info("DefaultEventDispatcher: Using " + gameFinder.getClass().getSimpleName() + " for " + event.getSimpleName());
         if (method == null || gameFinder == null) return null;
         return new DefaultEventDispatcher(event, priority, method, gameFinder);
     }

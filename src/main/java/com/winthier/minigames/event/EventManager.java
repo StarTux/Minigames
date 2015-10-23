@@ -66,7 +66,6 @@ public class EventManager {
                 continue;
             }
             dispatcher.registerEvent(game, listener, method, annotation.ignoreCancelled());
-            System.out.println("Registered event " + event.getSimpleName() + " for " + game.getUuid());
         }
     }
 
