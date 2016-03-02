@@ -7,6 +7,7 @@ import com.winthier.minigames.player.PlayerInfo;
 import com.winthier.minigames.util.Console;
 import com.winthier.minigames.util.Msg;
 import com.winthier.minigames.util.Players;
+import com.winthier.minigames.util.Title;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -293,6 +294,12 @@ public abstract class Game {
         }
         for (Player player : getOnlinePlayers()) {
             Console.command("tellraw " + player.getName() + " " + js);
+        }
+    }
+
+    public void announceTitle(String title, String subtitle) {
+        for (Player player : getOnlinePlayers()) {
+            Title.show(player, Msg.format(title), Msg.format(subtitle));
         }
     }
 

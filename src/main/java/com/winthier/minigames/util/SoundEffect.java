@@ -32,7 +32,7 @@ public class SoundEffect {
     }
 
     public static SoundEffect fromConfig(ConfigurationSection config) {
-        final Sound sound = Enums.parseEnum(Sound.class, config.getString("Sound"), Sound.CLICK);
+        final Sound sound = Enums.parseEnum(Sound.class, config.getString("Sound"), Sound.BLOCK_LEVER_CLICK);
         final float volume = (float)config.getDouble("Volume", 1.0);
         final float pitch = (float)config.getDouble("Pitch", 1.0);
         return new SoundEffect(sound, volume, pitch);

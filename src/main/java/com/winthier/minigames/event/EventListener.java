@@ -60,6 +60,7 @@ public class EventListener implements Listener {
         final List<String> commandList = plugin.getConfig().getStringList("ForcedCommands");
         new BukkitRunnable() {
             @Override public void run() {
+                if (!player.isValid()) return;
                 for (String cmd : commandList) {
                     player.performCommand(cmd);
                 }
