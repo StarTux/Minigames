@@ -8,6 +8,7 @@ import com.winthier.minigames.util.Msg;
 import java.util.Arrays;
 import java.util.List;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.command.CommandException;
 import org.bukkit.entity.Player;
@@ -44,6 +45,9 @@ public class EventListener implements Listener {
     public void onPlayerJoinLowest(PlayerJoinEvent event) {
         event.setJoinMessage(null);
         final Player player = event.getPlayer();
+        if (player.getGameMode() == GameMode.CREATIVE) {
+            player.setGameMode(GameMode.ADVENTURE);
+        }
         final PlayerInfo info = MinigamesPlugin.getPlayerManager().getPlayerInfo(player);
         final Game game = info.getCurrentGame();
         if (game == null) {
