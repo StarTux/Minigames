@@ -169,10 +169,10 @@ public class Hearts {
     }
 
     public void showHealth(Game game, LivingEntity entity) {
-        showHealthList.add(entity);
+        // showHealthList.add(entity);
     }
 
     public void showHealthLater(final Game game, final LivingEntity entity) {
-        showHealth(game, entity);
+        // showHealth(game, entity);
     }
 }
