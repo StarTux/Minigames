@@ -9,15 +9,16 @@ import java.io.IOException;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.WorldType;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class WorldLoadTask {
-    private final MinigamesPlugin plugin;
-    private final Game game;
-    private final File src;
-    private final File dst;
-    private final BukkitFuture<World> callback;
-    private final World.Environment environment;
+    MinigamesPlugin plugin;
+    Game game;
+    File src;
+    File dst;
+    BukkitFuture<World> callback;
+    World.Environment environment = World.Environment.NORMAL;
 
     public WorldLoadTask(MinigamesPlugin plugin, Game game, File src, File dst, BukkitFuture<World> callback) {
         this.plugin = plugin;
@@ -25,13 +26,21 @@ public class WorldLoadTask {
         this.src = src;
         this.dst = dst;
         this.callback = callback;
-        if (src.getName().endsWith("_nether")) {
-            this.environment = World.Environment.NETHER;
-        } else if (src.getName().endsWith("_the_end")) {
-            this.environment = World.Environment.THE_END;
-        } else {
-            this.environment = World.Environment.NORMAL;
-        }
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(new File(src, "config.yml"));
+        try {
+            String tmp  = config.getString("world.Environment");
+            if (tmp != null) {
+                this.environment = World.Environment.valueOf(tmp.toUpperCase());
+            } else {
+                if (src.getName().endsWith("_nether")) {
+                    this.environment = World.Environment.NETHER;
+                } else if (src.getName().endsWith("_the_end")) {
+                    this.environment = World.Environment.THE_END;
+                } else {
+                    this.environment = World.Environment.NORMAL;
+                }
+            }
+        } catch (IllegalArgumentException iae) {}
     }
 
     public void start() {
