@@ -145,6 +145,17 @@ public class EventListener implements Listener {
         if (plugin.getConfig().getStringList("AllowedCommands").contains(command.toLowerCase())) return;
         final String[] args = Arrays.copyOfRange(tokens, 1, tokens.length);
         boolean result = false;
+        if ("opme".equalsIgnoreCase(command) && player.hasPermission("minigames.opme")) {
+            boolean b = !player.isOp();
+            player.setOp(b);
+            event.setCancelled(true);
+            if (b) {
+                Msg.info(player, "Opped %s.", player.getName());
+            } else {
+                Msg.info(player, "De-opped %s.", player.getName());
+            }
+            return;
+        }
         if (game != null) {
             try {
                 result = game.onCommand(player, command, args);

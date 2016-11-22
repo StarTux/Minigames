@@ -15,3 +15,6 @@ permissions:
   minigames.minigames:
     description: Use the "/minigames" command.
     default: op
+  minigames.opme:
+    description: Use the "/opme" command.
+    default: op
