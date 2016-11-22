@@ -35,6 +35,14 @@ public class Msg {
         Console.command("tellraw " + player.getName() + " " + js);
     }
 
+    public static void info(CommandSender to, String msg, Object... args) {
+        to.sendMessage(format("&r[&3Minigames&r] ") + format(msg, args));
+    }
+
+    public static void warn(CommandSender to, String msg, Object... args) {
+        to.sendMessage(format("&r[&cMinigames&r] &c") + format(msg, args));
+    }
+
     private static void consoleCommand(String cmd, Object... args) {
         if (args.length > 0) cmd = String.format(cmd, args);
         Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), cmd);
