@@ -6,13 +6,14 @@ import com.winthier.minigames.event.player.PlayerLeaveEvent;
 import com.winthier.minigames.game.Game;
 import com.winthier.minigames.game.GameManager;
 import com.winthier.minigames.player.PlayerManager;
-import com.winthier.minigames.util.Hearts;
 import com.winthier.minigames.world.WorldManager;
+import com.winthier.sql.SQLDatabase;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -23,6 +24,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public final class MinigamesPlugin extends JavaPlugin {
     private static MinigamesPlugin instance = null;
+    @Getter private SQLDatabase db;
 
     // Managers
     private final GameManager gameManager = new GameManager(this);
@@ -30,8 +32,6 @@ public final class MinigamesPlugin extends JavaPlugin {
     private final WorldManager worldManager = new WorldManager(this);
     private final PlayerManager playerManager = new PlayerManager(this);
     private final EventListener eventListener = new EventListener(this);
-    // Cache
-    private Hearts hearts = null;
 
     @Override
     public void onEnable() {
@@ -41,6 +41,7 @@ public final class MinigamesPlugin extends JavaPlugin {
         saveDefaultConfig();
         reloadConfig();
         //loadConfiguration();
+        db = new SQLDatabase(this);
     }
 
     @Override
@@ -49,7 +50,6 @@ public final class MinigamesPlugin extends JavaPlugin {
         worldManager.clear();
         eventManager.clear();
         gameManager.clear();
-        if (hearts != null) hearts.disable();
         instance = null;
     }
 
@@ -146,14 +146,6 @@ public final class MinigamesPlugin extends JavaPlugin {
 
     public static GameManager getGameManager() {
         return instance.gameManager;
-    }
-
-    public static Hearts getHearts() {
-        if (instance.hearts == null) {
-            instance.hearts = new Hearts();
-            instance.hearts.enable();
-        }
-        return instance.hearts;
     }
 
     public void unregisterGame(Game game) {

@@ -3,9 +3,8 @@ description: Manage mini games
 author: StarTux
 version: 0.1
 main: com.winthier.minigames.MinigamesPlugin
-depend: [ ProtocolLib ]
+depend: [ SQL ]
 softdepend: [ NoCheatPlus ]
-database: true
 commands:
   Minigames:
     aliases: [ Mini ]
